@@ -1,20 +1,51 @@
 import java.util.Scanner;
 
 public class Assignment {
+
     static Scanner sc;
     public static void main(String[] args){
         sc = new Scanner(System.in);
         System.out.println("Welcome to Fred's diamond printer!\n");
         //Print pattern examples using the default num provided
-        int defaultNum = 7;
-        printPattern(combinePatterns(new char[][][]{pattern1(defaultNum), pattern2(defaultNum), pattern3(defaultNum), pattern4(defaultNum)}));
+        int defaultNum = 5;
+        //create the sample pattern for display
+        char[][] samplePattern = combinePatterns(new char[][][]{pattern1(defaultNum), pattern2(defaultNum), pattern3(defaultNum), pattern4(defaultNum)});
+        runLoop:
+        while(true) { //run until be manually break out of the loop
+            System.out.println("\n");
 
+            System.out.println("Please chose a pattern (1 - 4) or enter 5 to exit:");
+            printPattern(samplePattern); //print the sample pattern
 
-/**
-        int pattern = getValue("Enter pattern number (5 to exit): ",0,5);
-        int rowNum = getValue("Enter number of rows: ",0,10);
-        System.out.println(patern + " : "+rowNum);
-**/
+            int patternNum = getValue("", 1, 5); //get pattern number from user between 1 and 5
+            if (patternNum == 5) {
+                break runLoop; //break out of loop when user enters 5
+            }
+            int num = getValue("Enter number of rows: ", 0, 10); //get number of rows from user between 1 and 10
+            System.out.println("Printing "+patternNum+" for "+num+" rows!");
+            char[][] pattern;
+            switch (patternNum) { //Assign corresponding pattern to pattern variable
+                case 1:
+                    pattern = pattern1(num);
+                    break;
+                case 2:
+                    pattern = pattern2(num);
+                    break;
+                case 3:
+                    pattern = pattern3(num);
+                    break;
+                case 4:
+                    pattern = pattern4(num);
+                    break;
+                default:
+                    pattern = new char[][]{"Could not find corresponding pattern".toCharArray()}; //create blank pattern to make sure it isn't null
+                    break;
+
+            }
+            printPattern(pattern); //print the pattern
+            System.out.println("Please press enter key to continue...");
+            sc.nextLine(); //wait for user to press enter so he has time to see the pattern before it asks for next inputs
+        }
 
     }
 
@@ -23,6 +54,7 @@ public class Assignment {
         char[] row = new char[num]; //creates a row of empty characters
         for(int i = 0; i < num; i++){ //goes through the rows
             row[i] = String.valueOf(num-i).charAt(0); //sets a number to the row at i
+
             board[num-i-1] = row.clone(); //asigns a copy of the row from the bottom up so I can modify it for the next row
 
         }
@@ -48,20 +80,9 @@ public class Assignment {
                 board[rowNum][num-columnNum-1] = pattern1[rowNum][columnNum];
             }
         }
-        /**
-        char[] row = new char[num]; //blank row
-        for(int i = 0;i<row.length;i++){
-            row[i] = String.valueOf(i+1).charAt(0); //creates the first row, that s full
-
-        }
-        for(int i = 0; i < num; i++){
-            if(i>0) //or else 0-1 would be out of bounds
-            row[i-1]=0; //removes a character
-            board[i] = row.clone(); //asigns a clone so the row can be modified for next iteration
-
-        }**/
         return board;
     }
+
     static char[][] pattern4(int num){
         boolean even = num%2==0; //checks if even to adjust board size
         char[][] board = new char[even?num+1:num][even?num-1:num]; //sets the size of the board with adjustment in case of even
@@ -83,7 +104,7 @@ public class Assignment {
         return board;
     }
     static char[][] combinePatterns(char[][][] patterns){ //combines a set of patterns into one 2d array for display purposes
-        int space = 5; //space between, must be at least 3
+        int space = 8; //space between, must be at least 3
         int num = patterns[0].length; //checks the dimension of the arrays(they should be the same)
         char[][] board = new char[num][num*patterns.length+patterns.length*space]; //creates blank board big enough to contain all patterns
 
@@ -100,8 +121,6 @@ public class Assignment {
                     board[row][column] = value; //sets the relative char at the current location
                     column++;
                 }
-
-
             }
         }
         return board;
@@ -114,9 +133,11 @@ public class Assignment {
             System.out.println();
         }
     }
+
     public static int getValue(String m, int min,int max){//Get an input value within range
         int i;
         boolean error = false; //to track if it's the first iteration
+        if(m.length()>0)
         System.out.println(m); //print provided message
         do{
             if(error){
