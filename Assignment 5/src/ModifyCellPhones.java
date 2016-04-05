@@ -34,6 +34,8 @@ public class ModifyCellPhones {
                             rs++;
                         }
                         serial = (serial*10)+rs;
+
+                        
                     }
                     phones[i][j] = new CellPhone(brand,serial,price);
                 }
