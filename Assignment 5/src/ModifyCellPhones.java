@@ -12,7 +12,7 @@ import java.util.Random;
  * @author f_desgr
  */
 public class ModifyCellPhones {
-    
+
     public static void main(String[] args){
         Random r = new Random(System.currentTimeMillis());
         String[] brands = {"Google","Nokia","Samsung","Microsoft","Android","Apple"};
@@ -21,14 +21,29 @@ public class ModifyCellPhones {
             for(int j=0;j<phones[i].length;j++){
                 boolean copy = r.nextInt(2)==0;
                 if(copy){
-                    
+                    int ri = r.nextInt(i);
+                    int rj = r.nextInt(j);
+                    phones[i][j] = new CellPhone(phones[ri][rj]);
+                }else{
+                    String brand = brands[r.nextInt(brands.length)];
+                    double price = r.nextDouble()*500;
+                    long serial = 0;
+                    for(int s1=0;s1<9;s1++){
+                        int rs = r.nextInt(10);
+                        if(serial==0 && rs==0){
+                            rs++;
+                        }
+                        serial = (serial*10)+rs;
+                    }
+                    phones[i][j] = new CellPhone(brand,serial,price);
                 }
                 
-                String brand = brands[r.nextInt(brands.length)];
+
             }
         }
         
     }
+
     
     public static int modifyPhonePrices(CellPhone[][] phones, double d1, double d2){
         int n = 0;
