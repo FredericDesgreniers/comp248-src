@@ -94,7 +94,7 @@ public class ModifyCellPhones {
             i++;
         }
     }
-    public static int modifyPhonePrices(CellPhone[][] phones, double d1, double d2){ 
+    public static int modifyPhonePrices(CellPhone[][] phones, double d1, double d2){
         int n = 0;
         for(int i=0;i<phones.length;i++){
             for(int j=0;j<phones[i].length;j++){
